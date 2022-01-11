@@ -1,0 +1,11 @@
+{
+  "name": "snake",
+  "version": "0.0.1",
+  "description": "a snake game",
+  "scripts": {
+    "start": "volta run http-server ./ -a 127.0.0.1 -p 9876 -o /public/index.html"
+  },
+  "keywords": ["snake", "game"],
+  "author": "",
+  "license": "MIT"
+}
