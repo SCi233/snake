@@ -9,14 +9,16 @@ export class MainLoop {
 
   onLoop;
 
-  constructor () {}
+  lastTimeStamp;
 
-  setOpLoop (onUpdate) {
-    this.onLoop = onUpdate;
+  setOpLoop (onLoop) {
+    this.onLoop = onLoop;
   }
 
-  loop () {
-    this.onLoop && this.onLoop();
+  loop (timestamp) {
+    const elapsed = timestamp - this.lastTimeStamp;
+    this.lastTimeStamp = timestamp;
+    this.onLoop && this.onLoop(elapsed);
     window.requestAnimationFrame(this.loop.bind(this));
   }
 
@@ -24,7 +26,8 @@ export class MainLoop {
     if (this.loopStatus === LOOP_STATUS.PAUSED) {
       this.loopStatus = LOOP_STATUS.RUNNING;
 
-      this.loop();
+      this.lastTimeStamp = window.performance.now();
+      window.requestAnimationFrame(this.loop.bind(this));
     }
   }
 

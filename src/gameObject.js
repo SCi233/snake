@@ -7,5 +7,5 @@ export class GameObject {
 
   update () {}
 
-  draw (ctx) {}
+  draw (renderer) {}
 }
