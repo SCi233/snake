@@ -1,15 +1,68 @@
-import { GameObject } from "../gameObject.js";
+import { SnakeBody } from "./snakeBody.js";
+import { DIRECTION } from "./constants.js";
 
-export class SnakeHead extends GameObject {
-  constructor (x, y, width, height) {
-    super(x, y);
-    this.width = width;
-    this.height = height;
+export class SnakeHead extends SnakeBody {
+  static DIRECTION_TO_TYPE = {
+    [DIRECTION.UP]: SnakeBody.TYPES.UP,
+    [DIRECTION.RIGHT]: SnakeBody.TYPES.RIGHT,
+    [DIRECTION.DOWN]: SnakeBody.TYPES.DOWN,
+    [DIRECTION.LEFT]: SnakeBody.TYPES.LEFT,
+  }
+
+  static PIXEL_DATAS = {
+    [SnakeBody.TYPES.UP]: [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+    ],
+    [SnakeBody.TYPES.RIGHT]: [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [1, 1, 1, 1, 1, 1, 0, 0],
+      [1, 1, 1, 1, 1, 1, 0, 0],
+      [1, 1, 1, 1, 1, 1, 0, 0],
+      [1, 1, 1, 1, 1, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+    [SnakeBody.TYPES.DOWN]: [
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 1, 1, 1, 1, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+    [SnakeBody.TYPES.LEFT]: [
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 1, 1, 1, 1, 1, 1],
+      [0, 0, 1, 1, 1, 1, 1, 1],
+      [0, 0, 1, 1, 1, 1, 1, 1],
+      [0, 0, 1, 1, 1, 1, 1, 1],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+  }
+
+  constructor (x, y, pixelSize, type) {
+    super(x, y, pixelSize, type);
   }
 
   update () {}
 
   draw (renderer) {
-    renderer.drawRect(this.x, this.y, this.width, this.height, 'green');
+    super.draw(renderer);
+  }
+
+  _getPixelData (type) {
+    return SnakeHead.PIXEL_DATAS[type];
   }
 }

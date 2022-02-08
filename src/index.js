@@ -12,16 +12,16 @@ import { DIRECTION } from './snake/constants.js';
 const mainLoop = new MainLoop();
 
 const canvas = document.querySelector('#main-canvas');
-canvas.width = 240;
-canvas.height = 240;
+canvas.width = 24 * 12;
+canvas.height = 24 * 12;
 
 const renderer = new Renderer(canvas);
 
 const gameMap = new GameMap({
   x: 0,
   y: 0,
-  cellWidth: 20,
-  cellHeight: 20,
+  cellWidth: 24,
+  cellHeight: 24,
   cellColor: 'white',
   wallColor: 'gray',
   rowNums: 10,
@@ -30,8 +30,8 @@ const gameMap = new GameMap({
 
 const snake = new Snake({
   length: 3,
-  cellWidth: 20,
-  cellHeight: 20,
+  cellWidth: 24,
+  cellHeight: 24,
   rowNums: 10,
   colNums: 10,
 });
