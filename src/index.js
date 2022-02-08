@@ -46,7 +46,7 @@ const generateFoodXY = () => {
   return [x, y];
 }
 
-let food = new Food(...generateFoodXY(), 20, 20);
+let food = new Food(...generateFoodXY(), 3, Food.TYPES.CHERRY);
 
 const update = (elapsed) => {
   gameMap.update();
@@ -57,6 +57,7 @@ const update = (elapsed) => {
       snake.grow();
       snake.speedUp();
       [food.x, food.y] = generateFoodXY();
+      food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY][getRandomInt(0, 2)];
     }
   }
 }
