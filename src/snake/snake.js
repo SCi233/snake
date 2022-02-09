@@ -65,7 +65,7 @@ export class Snake extends GameObject {
   }
 
   draw (renderer) {
-    for (let node = this.head; node; node = node.next) {
+    for (let node = this.tail; node; node = node.prev) {
       node.value.draw(renderer);
     }
   }

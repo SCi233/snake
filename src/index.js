@@ -57,7 +57,7 @@ const update = (elapsed) => {
       snake.grow();
       snake.speedUp();
       [food.x, food.y] = generateFoodXY();
-      food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY][getRandomInt(0, 2)];
+      food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
     }
   }
 }
