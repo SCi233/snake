@@ -22,10 +22,11 @@ const gameMap = new GameMap({
   y: 0,
   cellWidth: 24,
   cellHeight: 24,
-  cellColor: 'white',
+  cellColor: 'DarkSeaGreen',
   wallColor: 'gray',
   rowNums: 10,
   colNums: 10,
+  pixelSize: 3,
 });
 
 const snake = new Snake({
