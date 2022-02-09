@@ -46,11 +46,12 @@ export class Snake extends GameObject {
     this._directionQueue = [];
     this._lastDirection = this.direction;
     this._eventEmitter = new EventEmitter();
+    this._dash = 0;
   }
 
   update (elapsed) {
     this._elapsed += elapsed;
-    if (this._elapsed >= 1000 / this.speed) {
+    if (this._elapsed >= 1000 / (this._dash || this.speed)) {
       this._elapsed = 0;
       if (this._directionQueue.length > 0) {
         this._lastDirection = this.direction;
@@ -92,6 +93,13 @@ export class Snake extends GameObject {
       head.next.value.type = SnakeBody.DIRECTION_TO_TYPE['' + this._lastDirection + this.direction];
       this._lastDirection = this.direction;
     }
+  }
+
+  dash () {
+    this._dash = 10;
+    setTimeout(() => {
+      this._dash = 0;
+    }, 300);
   }
 
   _calcTailType () {
@@ -148,7 +156,7 @@ export class Snake extends GameObject {
   }
 
   speedUp () {
-    this.speed = Math.min(this.speed + 1, 5);
+    this.speed = Math.min(this.speed + 1, 4);
 
     this._eventEmitter.emit('statusChanged', this.length, this.speed);
   }

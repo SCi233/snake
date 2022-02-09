@@ -28,7 +28,7 @@ ctrlBar.style.width = canvas.width + 'px';
 canvas.height = PIXEL_SIZE * 8 * (ROW_NUM + 2);
 
 const setStatusText = (snakeLength, snakeSpeed) => {
-  statusBar.innerHTML = `Length: ${snakeLength} Speed: ${snakeSpeed}`;
+  statusBar.innerHTML = `Length: ${snakeLength}, Speed: ${snakeSpeed}`;
 };
 
 const renderer = new Renderer(canvas);
@@ -75,7 +75,7 @@ const update = (elapsed) => {
     }
   } else {
     btnRestart.classList.remove('hidden');
-    btnPause.classList.add('hidden');
+    btnPause.setAttribute('disabled', 'false');
   }
 }
 
@@ -94,6 +94,7 @@ const keyArrowUp = new Keyboard('ArrowUp');
 const keyArrowRight = new Keyboard('ArrowRight');
 const keyArrowLeft = new Keyboard('ArrowLeft');
 const keyArrowDown = new Keyboard('ArrowDown');
+const keySpace = new Keyboard('Space');
 
 const checkInput = () => {
   if (keyW.isPressed() || keyArrowUp.isPressed()) {
@@ -104,6 +105,8 @@ const checkInput = () => {
     snake.changeDirection(DIRECTION.DOWN);
   } else if (keyA.isPressed() || keyArrowLeft.isPressed()) {
     snake.changeDirection(DIRECTION.LEFT);
+  } else if (keySpace.isPressed()) {
+    snake.dash();
   }
 }
 
@@ -123,7 +126,7 @@ const restart = () => {
 btnRestart.addEventListener('click', () => {
   restart();
   btnRestart.classList.add('hidden');
-  btnPause.classList.remove('hidden');
+  btnPause.setAttribute('disabled', 'true');
 });
 
 let isPaused = false;
