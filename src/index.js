@@ -11,13 +11,25 @@ import { DIRECTION } from './snake/constants.js';
 
 const ROW_NUM = 10;
 const COL_NUM = 10;
-const PIXEL_SIZE = 6;
+const PIXEL_SIZE = 4;
 
 const mainLoop = new MainLoop();
 
 const canvas = document.querySelector('#main-canvas');
+const statusBar = document.querySelector('#status-bar');
+const ctrlBar = document.querySelector('#ctrl-bar');
+const btnPause = document.querySelector('#btn-pause');
+const btnRestart = document.querySelector('#btn-restart');
+
 canvas.width = PIXEL_SIZE * 8 * (COL_NUM + 2);
+statusBar.style.width = canvas.width + 'px';
+ctrlBar.style.width = canvas.width + 'px';
+
 canvas.height = PIXEL_SIZE * 8 * (ROW_NUM + 2);
+
+const setStatusText = (snakeLength, snakeSpeed) => {
+  statusBar.innerHTML = `Length: ${snakeLength} Speed: ${snakeSpeed}`;
+};
 
 const renderer = new Renderer(canvas);
 
@@ -29,12 +41,14 @@ const gameMap = new GameMap({
   pixelSize: PIXEL_SIZE,
 });
 
-const snake = new Snake({
+let snake = new Snake({
   length: 3,
   rowNums: ROW_NUM,
   colNums: COL_NUM,
   pixelSize: PIXEL_SIZE,
 });
+snake.onStatusChanged(setStatusText);
+setStatusText(snake.length, snake.speed);
 
 const generateFoodXY = () => {
   let x, y;
@@ -59,6 +73,9 @@ const update = (elapsed) => {
       [food.x, food.y] = generateFoodXY();
       food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
     }
+  } else {
+    btnRestart.classList.remove('hidden');
+    btnPause.classList.add('hidden');
   }
 }
 
@@ -73,24 +90,55 @@ const keyW = new Keyboard('KeyW');
 const keyD = new Keyboard('KeyD');
 const keyS = new Keyboard('KeyS');
 const keyA = new Keyboard('KeyA');
+const keyArrowUp = new Keyboard('ArrowUp');
+const keyArrowRight = new Keyboard('ArrowRight');
+const keyArrowLeft = new Keyboard('ArrowLeft');
+const keyArrowDown = new Keyboard('ArrowDown');
 
 const checkInput = () => {
-  if (keyW.isPressed()) {
+  if (keyW.isPressed() || keyArrowUp.isPressed()) {
     snake.changeDirection(DIRECTION.UP);
-  } else if (keyD.isPressed()) {
+  } else if (keyD.isPressed() || keyArrowRight.isPressed()) {
     snake.changeDirection(DIRECTION.RIGHT);
-  } else if (keyS.isPressed()) {
+  } else if (keyS.isPressed() || keyArrowDown.isPressed()) {
     snake.changeDirection(DIRECTION.DOWN);
-  } else if (keyA.isPressed()) {
+  } else if (keyA.isPressed() || keyArrowLeft.isPressed()) {
     snake.changeDirection(DIRECTION.LEFT);
   }
 }
 
+const restart = () => {
+  snake = new Snake({
+    length: 3,
+    rowNums: ROW_NUM,
+    colNums: COL_NUM,
+    pixelSize: PIXEL_SIZE,
+  });
+  snake.onStatusChanged(setStatusText);
+  setStatusText(snake.length, snake.speed);
+  [food.x, food.y] = generateFoodXY();
+  food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
+}
+
+btnRestart.addEventListener('click', () => {
+  restart();
+  btnRestart.classList.add('hidden');
+  btnPause.classList.remove('hidden');
+});
+
+let isPaused = false;
+
+btnPause.addEventListener('click', () => {
+  isPaused = !isPaused;
+  btnPause.innerHTML = isPaused ? 'Resume' : 'Pause';
+});
+
 const main = () => {
-  console.log('hello world');
   mainLoop.setOpLoop((elapsed) => {
-    checkInput();
-    update (elapsed);
+    if (!isPaused) {
+      checkInput();
+      update (elapsed);
+    }
     draw();
   });
   mainLoop.start();

@@ -11,11 +11,53 @@
       border: 0;
       padding: 0;
     }
+
+    body {
+      background-color: DarkSeaGreen;
+    }
+
+    .main-content {
+      display: block;
+      margin: 4vh auto 0;
+      color: DarkRed;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .horizontal {
+      display: flex;
+      flex-direction: row;
+    }
+
+    button {
+      margin-right: 2vw;
+      border: 2px solid DarkRed;
+      border-radius: 3px;
+      background-color: DarkGoldenRod;
+      color: white;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: DarkRed;
+    }
+
+    button:active {
+      background-color: DarkGoldenRod;
+    }
   </style>
 </head>
 <body>
   <div id="app">
-    <canvas id="main-canvas"></canvas>
+    <div id="status-bar" class="horizontal main-content">Length:  Speed: </div>
+    <canvas id="main-canvas" class="main-content"></canvas>
+    <div id="ctrl-bar" class="horizontal main-content">
+      <button id="btn-pause">Pause</button>
+      <button id="btn-restart" class="hidden">Restart</button>
+    </div>
   </div>
   <script type="module" src="../src/index.js"></script>
 </body>

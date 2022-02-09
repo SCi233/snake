@@ -2,6 +2,7 @@ import { GameObject } from "../gameObject.js";
 import { SnakeHead } from "./snakeHead.js";
 import { SnakeBody } from "./snakeBody.js";
 import { SnakeTail } from "./snakeTail.js";
+import { EventEmitter } from '../event.js';
 import {
   DIRECTION,
   INVALID_DIRECTION,
@@ -44,6 +45,7 @@ export class Snake extends GameObject {
     this._canGrow = false;
     this._directionQueue = [];
     this._lastDirection = this.direction;
+    this._eventEmitter = new EventEmitter();
   }
 
   update (elapsed) {
@@ -90,8 +92,6 @@ export class Snake extends GameObject {
       head.next.value.type = SnakeBody.DIRECTION_TO_TYPE['' + this._lastDirection + this.direction];
       this._lastDirection = this.direction;
     }
-    // if ()
-    console.log(this.toString());
   }
 
   _calcTailType () {
@@ -130,7 +130,8 @@ export class Snake extends GameObject {
       head.next.value.type = SnakeBody.DIRECTION_TO_TYPE['' + this._lastDirection + this.direction];
       this._lastDirection = this.direction;
     }
-    console.log(this.toString());
+
+    this._eventEmitter.emit('statusChanged', this.length, this.speed);
   }
 
   changeDirection (direction) {
@@ -147,11 +148,15 @@ export class Snake extends GameObject {
   }
 
   speedUp () {
-    this.speed = Math.min(this.speed + 1, this.pixelSize);
+    this.speed = Math.min(this.speed + 1, 5);
+
+    this._eventEmitter.emit('statusChanged', this.length, this.speed);
   }
 
   speedDown () {
     this.speed = Math.max(this.speed - 1, 1);
+
+    this._eventEmitter.emit('statusChanged', this.length, this.speed);
   }
 
   isEat (food) {
@@ -186,5 +191,9 @@ export class Snake extends GameObject {
       }
     }
     return false;
+  }
+
+  onStatusChanged (cb) {
+    this._eventEmitter.on('statusChanged', cb);
   }
 }
