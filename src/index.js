@@ -75,7 +75,7 @@ const update = (elapsed) => {
     }
   } else {
     btnRestart.classList.remove('hidden');
-    btnPause.setAttribute('disabled', 'false');
+    btnPause.setAttribute('disabled', 'disabled');
   }
 }
 
@@ -126,7 +126,7 @@ const restart = () => {
 btnRestart.addEventListener('click', () => {
   restart();
   btnRestart.classList.add('hidden');
-  btnPause.setAttribute('disabled', 'true');
+  btnPause.removeAttribute('disabled');
 });
 
 let isPaused = false;
