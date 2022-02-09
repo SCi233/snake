@@ -9,45 +9,44 @@ import { Food } from './food.js';
 import { getRandomInt } from './utils.js';
 import { DIRECTION } from './snake/constants.js';
 
+const ROW_NUM = 10;
+const COL_NUM = 10;
+const PIXEL_SIZE = 6;
+
 const mainLoop = new MainLoop();
 
 const canvas = document.querySelector('#main-canvas');
-canvas.width = 24 * 12;
-canvas.height = 24 * 12;
+canvas.width = PIXEL_SIZE * 8 * (COL_NUM + 2);
+canvas.height = PIXEL_SIZE * 8 * (ROW_NUM + 2);
 
 const renderer = new Renderer(canvas);
 
 const gameMap = new GameMap({
   x: 0,
   y: 0,
-  cellWidth: 24,
-  cellHeight: 24,
-  cellColor: 'DarkSeaGreen',
-  wallColor: 'gray',
-  rowNums: 10,
-  colNums: 10,
-  pixelSize: 3,
+  rowNums: ROW_NUM,
+  colNums: COL_NUM,
+  pixelSize: PIXEL_SIZE,
 });
 
 const snake = new Snake({
   length: 3,
-  cellWidth: 24,
-  cellHeight: 24,
-  rowNums: 10,
-  colNums: 10,
+  rowNums: ROW_NUM,
+  colNums: COL_NUM,
+  pixelSize: PIXEL_SIZE,
 });
 
 const generateFoodXY = () => {
   let x, y;
   do {
-    x = (getRandomInt(0, gameMap.colNums) + 1) * gameMap.cellWidth;
-    y = (getRandomInt(0, gameMap.rowNums) + 1) * gameMap.cellHeight;
+    x = (getRandomInt(0, gameMap.colNums) + 1) * gameMap.pixelSize * 8;
+    y = (getRandomInt(0, gameMap.rowNums) + 1) * gameMap.pixelSize * 8;
   } while (snake.includes(x, y));
 
   return [x, y];
 }
 
-let food = new Food(...generateFoodXY(), 3, Food.TYPES.CHERRY);
+let food = new Food(...generateFoodXY(), PIXEL_SIZE, Food.TYPES.CHERRY);
 
 const update = (elapsed) => {
   gameMap.update();

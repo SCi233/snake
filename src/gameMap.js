@@ -28,6 +28,16 @@ const PIXEL_DATAS = {
     [0, 0, 0, 7, 7, 0, 0, 0,],
     [0, 0, 0, 7, 7, 0, 0, 0,],
   ],
+  CELL: [
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+    [0, 0, 0, 0, 0, 0, 0, 0,],
+  ],
 };
 
 export class GameMap extends GameObject {
@@ -35,19 +45,11 @@ export class GameMap extends GameObject {
     const {
       x,
       y,
-      cellWidth,
-      cellHeight,
-      cellColor,
-      wallColor,
       rowNums,
       colNums,
       pixelSize,
     } = config;
     super(x, y);
-    this.cellWidth = cellWidth;
-    this.cellHeight = cellHeight;
-    this.cellColor = cellColor;
-    this.wallColor = wallColor;
     this.rowNums = rowNums;
     this.colNums = colNums;
     this.pixelSize = pixelSize;
@@ -62,10 +64,10 @@ export class GameMap extends GameObject {
 
   draw (renderer) {
     this._drawTrees(renderer);
-    this.drawCells(renderer);
+    this._drawCells(renderer);
   }
 
-  _drawTree (renderer, x, y, type) {
+  _drawCell (renderer, x, y, type) {
     const pixelData = PIXEL_DATAS[type];
     const { pixelSize } = this;
     for (let r = 0; r < pixelData.length; r++) {
@@ -79,16 +81,21 @@ export class GameMap extends GameObject {
     const { pixelSize } = this;
     let typeIndex = 0;
     for (let r = 0; r < this.rowNums + 2; ++r) {
-      this._drawTree(renderer, 0, r * pixelSize * 8, this._treeTypeArr[typeIndex++]);
-      this._drawTree(renderer, (this.colNums + 1) *  pixelSize * 8, r * pixelSize * 8, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, 0, r * pixelSize * 8, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, (this.colNums + 1) *  pixelSize * 8, r * pixelSize * 8, this._treeTypeArr[typeIndex++]);
     }
     for (let c = 1; c <= this.colNums; ++c) {
-      this._drawTree(renderer, c * pixelSize * 8, 0, this._treeTypeArr[typeIndex++]);
-      this._drawTree(renderer, c * pixelSize * 8, (this.colNums + 1) *  pixelSize * 8, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, c * pixelSize * 8, 0, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, c * pixelSize * 8, (this.colNums + 1) *  pixelSize * 8, this._treeTypeArr[typeIndex++]);
     }
   }
 
-  drawCells (renderer) {
-    renderer.drawRect(this.cellWidth, this.cellHeight, this.cellWidth * this.colNums, this.cellHeight * this.rowNums, this.cellColor);
+  _drawCells (renderer) {
+    const { pixelSize } = this;
+    for (let r = 0; r < this.rowNums; ++r) {
+      for (let c = 0; c < this.colNums; ++c) {
+        this._drawCell(renderer, (c + 1) * pixelSize * 8, (r + 1) * pixelSize * 8, 'CELL');
+      }
+    }
   }
 }
