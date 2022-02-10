@@ -10,7 +10,7 @@ import {
   directionValues,
 } from './constants.js';
 
-const MAX_SPEED = isTouchable ? 3 : 4;
+const MAX_SPEED = isTouchable() ? 3 : 4;
 
 class ListNode {
   constructor (value, prev, next) {

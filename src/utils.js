@@ -5,5 +5,5 @@ export const getRandomInt = (min, max) => {
 };
 
 export const isTouchable = () => {
-  return 'ontouchstart' in window;
+  return 'ontouchstart' in window || navigator.maxTouchPoints;
 };
