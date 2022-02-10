@@ -32,7 +32,7 @@
       flex-direction: row;
     }
 
-    button {
+    .btn-ctrl {
       margin-right: 2vw;
       border: 2px solid DarkRed;
       border-radius: 3px;
@@ -40,18 +40,102 @@
       color: white;
       font-weight: bold;
     }
-
-    button:hover {
+    .btn-ctrl:hover {
       background-color: DarkRed;
     }
-
-    button:active {
+    .btn-ctrl:active {
       background-color: DarkGoldenRod;
     }
-
-    button:disabled {
+    .btn-ctrl:disabled {
       background-color: darkgray;
       border-color: gray;
+    }
+
+    #ctrl-bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .btn-dash {
+      width: 48px;
+      height: 48px;
+      margin-top: 8px;
+      border: 2px solid DarkRed;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: DarkGoldenRod;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 48px;
+    }
+
+    .btn-joystick {
+      width: 24px;
+      height: 24px;
+      border: 2px solid DarkRed;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: DarkGoldenRod;
+      color: white;
+    }
+    .btn-dash:hover,.btn-joystick:hover {
+      background-color: DarkRed;
+    }
+    .btn-dash:active,.btn-joystick:active {
+      background-color: DarkGoldenRod;
+    }
+    .btn-dash:disabled,.btn-joystick:disabled {
+      background-color: darkgray;
+      border-color: gray;
+    }
+
+    .triangle-up {
+      width: 0;
+      height: 0;
+      border-right: 5px solid transparent;
+      border-bottom: 10px solid White;
+      border-left: 5px solid transparent;
+    }
+    .triangle-right {
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 10px solid White;
+    }
+    .triangle-down {
+      width: 0;
+      height: 0;
+      border-top: 10px solid White;
+      border-right: 5px solid transparent;
+      border-left: 5px solid transparent;
+    }
+    .triangle-left {
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-right: 10px solid White;
+      border-bottom: 5px solid transparent;
+    }
+
+    .joystick {
+      width: 88px;
+      height: 88px;
+    }
+    .joystick>.horizontal {
+      justify-content: space-between;
+    }
+    .joystick>.joystick-up,.joystick-down {
+      margin-top: 8px;
+      margin-left: 32px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -59,9 +143,32 @@
   <div id="app">
     <div id="status-bar" class="horizontal main-content">Length: , Speed: </div>
     <canvas id="main-canvas" class="main-content"></canvas>
+    <div id="tool-bar" class="horizontal main-content">
+      <button id="btn-pause" class="btn-ctrl">Pause</button>
+      <button id="btn-restart" class="btn-ctrl hidden">Restart</button>
+    </div>
     <div id="ctrl-bar" class="horizontal main-content">
-      <button id="btn-pause">Pause</button>
-      <button id="btn-restart" class="hidden">Restart</button>
+      <div class="space"></div>
+      <button id="btn-dash" class="btn-dash">
+        Dash
+      </button>
+      <div id="joystick" class="joystick">
+        <button id="btn-joystick-up" class="btn-joystick joystick-up">
+          <div class="triangle-up"></div>
+        </button>
+        <div class="horizontal">
+          <button id="btn-joystick-left" class="btn-joystick joystick-left">
+            <div class="triangle-left"></div>
+          </button>
+          <button id="btn-joystick-right" class="btn-joystick joystick-right">
+            <div class="triangle-right"></div>
+          </button>
+        </div>
+        <button id="btn-joystick-down" class="btn-joystick joystick-down">
+          <div class="triangle-down"></div>
+        </button>
+      </div>
+      <div class="space"></div>
     </div>
   </div>
   <script type="module" src="../src/index.js"></script>

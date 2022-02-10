@@ -17,13 +17,20 @@ const mainLoop = new MainLoop();
 
 const canvas = document.querySelector('#main-canvas');
 const statusBar = document.querySelector('#status-bar');
+const toolBar = document.querySelector('#tool-bar');
 const ctrlBar = document.querySelector('#ctrl-bar');
 const btnPause = document.querySelector('#btn-pause');
 const btnRestart = document.querySelector('#btn-restart');
+const btnJoystickUp = document.querySelector('#btn-joystick-up');
+const btnJoystickLeft = document.querySelector('#btn-joystick-left');
+const btnJoystickRight = document.querySelector('#btn-joystick-right');
+const btnJoystickDown = document.querySelector('#btn-joystick-down');
+const btnDash = document.querySelector('#btn-dash');
 
 canvas.width = PIXEL_SIZE * 8 * (COL_NUM + 2);
 statusBar.style.width = canvas.width + 'px';
 ctrlBar.style.width = canvas.width + 'px';
+toolBar.style.width = canvas.width + 'px';
 
 canvas.height = PIXEL_SIZE * 8 * (ROW_NUM + 2);
 
@@ -109,6 +116,22 @@ const checkInput = () => {
     snake.dash();
   }
 }
+
+btnJoystickUp.addEventListener('click', () => {
+  snake.changeDirection(DIRECTION.UP);
+})
+btnJoystickRight.addEventListener('click', () => {
+  snake.changeDirection(DIRECTION.RIGHT);
+})
+btnJoystickDown.addEventListener('click', () => {
+  snake.changeDirection(DIRECTION.DOWN);
+})
+btnJoystickLeft.addEventListener('click', () => {
+  snake.changeDirection(DIRECTION.LEFT);
+})
+btnDash.addEventListener('click', () => {
+  snake.dash();
+})
 
 const restart = () => {
   snake = new Snake({
