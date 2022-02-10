@@ -24,7 +24,7 @@
     }
 
     .hidden {
-      display: none;
+      display: none !important;
     }
 
     .horizontal {
@@ -63,7 +63,7 @@
     .btn-dash {
       width: 48px;
       height: 48px;
-      margin-top: 16px;
+      margin-top: 8px;
       border: 2px solid DarkRed;
       border-radius: 50%;
       display: flex;
@@ -137,9 +137,11 @@
       justify-content: space-between;
     }
     .joystick>.joystick-up,.joystick-down {
-      margin-top: 8px;
       margin-left: 56px;
       margin-bottom: 8px;
+    }
+    .joystick>.joystick-up,.joystick-down {
+      margin-top: 8px;
     }
   </style>
 </head>
@@ -151,7 +153,8 @@
       <button id="btn-pause" class="btn-ctrl">Pause</button>
       <button id="btn-restart" class="btn-ctrl hidden">Restart</button>
     </div>
-    <div id="ctrl-bar" class="horizontal main-content">
+    <div id="tips-bar" class="main-content hidden">Move: wasd or ↑→↓←, Dash: space</div>
+    <div id="ctrl-bar" class="horizontal main-content hidden">
       <div class="space"></div>
       <button id="btn-dash" class="btn-dash">
         Dash

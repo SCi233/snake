@@ -6,7 +6,7 @@ import { GameMap } from './gameMap.js';
 import { Snake } from './snake/snake.js';
 import { Food } from './food.js';
 
-import { getRandomInt } from './utils.js';
+import { getRandomInt, isTouchable } from './utils.js';
 import { DIRECTION } from './snake/constants.js';
 
 const ROW_NUM = 10;
@@ -19,6 +19,7 @@ const canvas = document.querySelector('#main-canvas');
 const statusBar = document.querySelector('#status-bar');
 const toolBar = document.querySelector('#tool-bar');
 const ctrlBar = document.querySelector('#ctrl-bar');
+const tipsBar = document.querySelector('#tips-bar');
 const btnPause = document.querySelector('#btn-pause');
 const btnRestart = document.querySelector('#btn-restart');
 const btnJoystickUp = document.querySelector('#btn-joystick-up');
@@ -31,8 +32,15 @@ canvas.width = PIXEL_SIZE * 8 * (COL_NUM + 2);
 statusBar.style.width = canvas.width + 'px';
 ctrlBar.style.width = canvas.width + 'px';
 toolBar.style.width = canvas.width + 'px';
+tipsBar.style.width = canvas.width + 'px';
 
 canvas.height = PIXEL_SIZE * 8 * (ROW_NUM + 2);
+
+if (isTouchable()) {
+  ctrlBar.classList.remove('hidden');
+} else {
+  tipsBar.classList.remove('hidden');
+}
 
 const setStatusText = (snakeLength, snakeSpeed) => {
   statusBar.innerHTML = `Length: ${snakeLength}, Speed: ${snakeSpeed}`;

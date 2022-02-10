@@ -3,11 +3,14 @@ import { SnakeHead } from "./snakeHead.js";
 import { SnakeBody } from "./snakeBody.js";
 import { SnakeTail } from "./snakeTail.js";
 import { EventEmitter } from '../event.js';
+import { isTouchable } from "../utils.js";
 import {
   DIRECTION,
   INVALID_DIRECTION,
   directionValues,
 } from './constants.js';
+
+const MAX_SPEED = isTouchable ? 3 : 4;
 
 class ListNode {
   constructor (value, prev, next) {
@@ -156,7 +159,7 @@ export class Snake extends GameObject {
   }
 
   speedUp () {
-    this.speed = Math.min(this.speed + 1, 4);
+    this.speed = Math.min(this.speed + 1, MAX_SPEED);
 
     this._eventEmitter.emit('statusChanged', this.length, this.speed);
   }
