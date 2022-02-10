@@ -117,21 +117,16 @@ const checkInput = () => {
   }
 }
 
-btnJoystickUp.addEventListener('click', () => {
-  snake.changeDirection(DIRECTION.UP);
-})
-btnJoystickRight.addEventListener('click', () => {
-  snake.changeDirection(DIRECTION.RIGHT);
-})
-btnJoystickDown.addEventListener('click', () => {
-  snake.changeDirection(DIRECTION.DOWN);
-})
-btnJoystickLeft.addEventListener('click', () => {
-  snake.changeDirection(DIRECTION.LEFT);
-})
-btnDash.addEventListener('click', () => {
-  snake.dash();
-})
+btnJoystickUp.addEventListener('mousedown', () => { snake.changeDirection(DIRECTION.UP); });
+btnJoystickUp.addEventListener('touchstart', () => { snake.changeDirection(DIRECTION.UP); });
+btnJoystickRight.addEventListener('mousedown', () => { snake.changeDirection(DIRECTION.RIGHT); });
+btnJoystickRight.addEventListener('touchstart', () => { snake.changeDirection(DIRECTION.RIGHT); });
+btnJoystickDown.addEventListener('mousedown', () => { snake.changeDirection(DIRECTION.DOWN); });
+btnJoystickDown.addEventListener('touchstart', () => { snake.changeDirection(DIRECTION.DOWN); });
+btnJoystickLeft.addEventListener('mousedown', () => { snake.changeDirection(DIRECTION.LEFT); });
+btnJoystickLeft.addEventListener('touchstart', () => { snake.changeDirection(DIRECTION.LEFT); });
+btnDash.addEventListener('mousedown', () => { snake.dash(); });
+btnDash.addEventListener('touchstart', () => { snake.dash(); });
 
 const restart = () => {
   snake = new Snake({

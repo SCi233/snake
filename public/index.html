@@ -40,8 +40,10 @@
       color: white;
       font-weight: bold;
     }
-    .btn-ctrl:hover {
-      background-color: DarkRed;
+    @media (hover) {
+      .btn-ctrl:hover {
+        background-color: DarkRed;
+      }
     }
     .btn-ctrl:active {
       background-color: DarkGoldenRod;
@@ -85,8 +87,10 @@
       background-color: DarkGoldenRod;
       color: white;
     }
-    .btn-dash:hover,.btn-joystick:hover {
-      background-color: DarkRed;
+    @media (hover) {
+      .btn-dash:hover,.btn-joystick:hover {
+        background-color: DarkRed;
+      }
     }
     .btn-dash:active,.btn-joystick:active {
       background-color: DarkGoldenRod;
@@ -139,7 +143,7 @@
     }
   </style>
 </head>
-<body ontouchstart="">
+<body>
   <div id="app">
     <div id="status-bar" class="horizontal main-content">Length: , Speed: </div>
     <canvas id="main-canvas" class="main-content"></canvas>
