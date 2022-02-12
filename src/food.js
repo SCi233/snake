@@ -1,4 +1,5 @@
 import { GameObject } from "./gameObject.js";
+import { LP2RP } from "./utils.js";
 
 export class Food extends GameObject {
   static TYPES = {
@@ -66,8 +67,9 @@ export class Food extends GameObject {
   update () {}
 
   draw (renderer) {
-    const {x, y, pixelSize, type} = this;
+    const {pixelSize, type} = this;
     const pixelData = this._getPixelData(type);
+    const {x, y} = LP2RP(this.x, this.y, pixelSize);
     for (let r = 0; r < pixelData.length; r++) {
       for (let c = 0; c < pixelData[r].length; c++) {
         renderer.drawRect(x + c * pixelSize, y + r * pixelSize, pixelSize, pixelSize, this._getColor(pixelData[r][c]));

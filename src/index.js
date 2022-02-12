@@ -68,8 +68,8 @@ setStatusText(snake.length, snake.speed);
 const generateFoodXY = () => {
   let x, y;
   do {
-    x = (getRandomInt(0, gameMap.colNums) + 1) * gameMap.pixelSize * 8;
-    y = (getRandomInt(0, gameMap.rowNums) + 1) * gameMap.pixelSize * 8;
+    x = getRandomInt(0, gameMap.colNums) + 1;
+    y = getRandomInt(0, gameMap.rowNums) + 1;
   } while (snake.includes(x, y));
 
   return [x, y];

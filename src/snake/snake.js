@@ -34,13 +34,13 @@ export class Snake extends GameObject {
     this.direction = DIRECTION.RIGHT;
     this.speed = 1;
 
-    this.head = new ListNode(new SnakeHead(length * this.pixelSize * 8, this.pixelSize * 8, pixelSize, SnakeHead.TYPES.RIGHT));
+    this.head = new ListNode(new SnakeHead(length, 1, pixelSize, SnakeHead.TYPES.RIGHT));
     let tail = this.head;
     for (let i = 1; i < length - 1; i++) {
-      tail.next = new ListNode(new SnakeBody((length - i) * this.pixelSize * 8, this.pixelSize * 8, pixelSize, SnakeBody.TYPES.HORIZONTAL), tail);
+      tail.next = new ListNode(new SnakeBody(length - i, 1, pixelSize, SnakeBody.TYPES.HORIZONTAL), tail);
       tail = tail.next;
     }
-    tail.next = new ListNode(new SnakeTail(this.pixelSize * 8, this.pixelSize * 8, pixelSize, SnakeTail.TYPES.RIGHT), tail);
+    tail.next = new ListNode(new SnakeTail(1, 1, pixelSize, SnakeTail.TYPES.RIGHT), tail);
     tail = tail.next;
     this.tail = tail;
 
@@ -88,8 +88,8 @@ export class Snake extends GameObject {
     this.tail.value.type = this._calcTailType();
     const head = this.head;
     const direction = directionValues[this.direction];
-    head.value.x += direction[1] * this.pixelSize * 8;
-    head.value.y += direction[0] * this.pixelSize * 8;
+    head.value.x += direction[1];
+    head.value.y += direction[0];
     head.value.type = SnakeHead.DIRECTION_TO_TYPE[this.direction];
     if (this.direction !== this._lastDirection) {
       head.value.type = SnakeHead.DIRECTION_TO_TYPE[this.direction];
@@ -134,8 +134,8 @@ export class Snake extends GameObject {
     head.next = node;
     this.length++;
     const direction = directionValues[this.direction];
-    head.value.x += direction[1] * this.pixelSize * 8;
-    head.value.y += direction[0] * this.pixelSize * 8;
+    head.value.x += direction[1];
+    head.value.y += direction[0];
     if (this.direction !== this._lastDirection) {
       head.value.type = SnakeHead.DIRECTION_TO_TYPE[this.direction];
       head.next.value.type = SnakeBody.DIRECTION_TO_TYPE['' + this._lastDirection + this.direction];
@@ -178,8 +178,8 @@ export class Snake extends GameObject {
   isDead () {
     const head = this.head;
     const { x: headX, y: headY, } = head.value;
-    if (headX < this.pixelSize * 8 || headX > this.pixelSize * 8 * this.colNums ||
-      headY < this.pixelSize * 8 || headY > this.pixelSize * 8 * this.rowNums) {
+    if (headX < 1 || headX > this.colNums ||
+      headY < 1 || headY > this.rowNums) {
       return true;
     }
     for (let node = head.next; node; node = node.next) {

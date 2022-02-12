@@ -1,5 +1,5 @@
 import { GameObject } from "./gameObject.js";
-import { getRandomInt } from './utils.js';
+import { getRandomInt, LP2RP } from './utils.js';
 
 const COLORS = [
   'DarkSeaGreen',
@@ -70,31 +70,30 @@ export class GameMap extends GameObject {
   _drawCell (renderer, x, y, type) {
     const pixelData = PIXEL_DATAS[type];
     const { pixelSize } = this;
+    const {x: rx, y: ry} = LP2RP(x, y, pixelSize);
     for (let r = 0; r < pixelData.length; r++) {
       for (let c = 0; c < pixelData[r].length; c++) {
-        renderer.drawRect(x + c * pixelSize, y + r * pixelSize, pixelSize, pixelSize, COLORS[pixelData[r][c]]);
+        renderer.drawRect(rx + c * pixelSize, ry + r * pixelSize, pixelSize, pixelSize, COLORS[pixelData[r][c]]);
       }
     }
   }
 
   _drawTrees (renderer) {
-    const { pixelSize } = this;
     let typeIndex = 0;
     for (let r = 0; r < this.rowNums + 2; ++r) {
-      this._drawCell(renderer, 0, r * pixelSize * 8, this._treeTypeArr[typeIndex++]);
-      this._drawCell(renderer, (this.colNums + 1) *  pixelSize * 8, r * pixelSize * 8, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, 0, r, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, this.colNums + 1, r, this._treeTypeArr[typeIndex++]);
     }
     for (let c = 1; c <= this.colNums; ++c) {
-      this._drawCell(renderer, c * pixelSize * 8, 0, this._treeTypeArr[typeIndex++]);
-      this._drawCell(renderer, c * pixelSize * 8, (this.colNums + 1) *  pixelSize * 8, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, c, 0, this._treeTypeArr[typeIndex++]);
+      this._drawCell(renderer, c, this.colNums + 1, this._treeTypeArr[typeIndex++]);
     }
   }
 
   _drawCells (renderer) {
-    const { pixelSize } = this;
     for (let r = 0; r < this.rowNums; ++r) {
       for (let c = 0; c < this.colNums; ++c) {
-        this._drawCell(renderer, (c + 1) * pixelSize * 8, (r + 1) * pixelSize * 8, 'CELL');
+        this._drawCell(renderer, c + 1, r + 1, 'CELL');
       }
     }
   }

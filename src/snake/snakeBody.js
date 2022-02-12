@@ -1,5 +1,6 @@
 import { GameObject } from "../gameObject.js";
 import { DIRECTION } from "./constants.js";
+import { LP2RP } from '../utils.js';
 
 const HORIZONTAL_PIXEL_DATAS = [
   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -122,7 +123,8 @@ export class SnakeBody extends GameObject {
   update () {}
 
   draw (renderer) {
-    const {x, y, pixelSize, type} = this;
+    const {pixelSize, type} = this;
+    const {x, y} = LP2RP(this.x, this.y, pixelSize);
     const pixelData = this._getPixelData(type);
     for (let r = 0; r < pixelData.length; r++) {
       for (let c = 0; c < pixelData[r].length; c++) {
