@@ -11,6 +11,8 @@ import {
 } from './constants.js';
 
 const MAX_SPEED = isTouchable() ? 3 : 4;
+const INIT_SPEED = 1;
+const AI_SPEED = 16;
 
 class ListNode {
   constructor (value, prev, next) {
@@ -32,7 +34,9 @@ export class Snake extends GameObject {
     this.pixelSize = pixelSize;
 
     this.direction = DIRECTION.RIGHT;
-    this.speed = 1;
+    this.speed = INIT_SPEED;
+
+    this.beforeMove;
 
     this.head = new ListNode(new SnakeHead(length, 1, pixelSize, SnakeHead.TYPES.RIGHT));
     let tail = this.head;
@@ -54,9 +58,13 @@ export class Snake extends GameObject {
 
   update (elapsed) {
     this._elapsed += elapsed;
-    if (this._elapsed >= 1000 / (this._dash || this.speed)) {
+    const aiSpeed = this.beforeMove ? AI_SPEED : 0;
+    if (this._elapsed >= 1000 / (aiSpeed || this._dash || this.speed)) {
       this._elapsed = 0;
-      if (this._directionQueue.length > 0) {
+      if (this.beforeMove) {
+        const isTailAccessible = !this._canGrow;
+        this.direction = this.beforeMove({ isTailAccessible });
+      } else if (this._directionQueue.length > 0) {
         this._lastDirection = this.direction;
         this.direction = this._directionQueue.shift();
       }
@@ -71,7 +79,9 @@ export class Snake extends GameObject {
 
   draw (renderer) {
     for (let node = this.tail; node; node = node.prev) {
-      node.value.draw(renderer);
+      if (node.value.visible) {
+        node.value.draw(renderer);
+      }
     }
   }
 
@@ -206,5 +216,13 @@ export class Snake extends GameObject {
 
   onStatusChanged (cb) {
     this._eventEmitter.on('statusChanged', cb);
+  }
+
+  getHead () {
+    return this.head.value;
+  }
+
+  getTail () {
+    return this.tail.value;
   }
 }

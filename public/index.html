@@ -52,6 +52,9 @@
       background-color: darkgray;
       border-color: gray;
     }
+    .btn-ctrl-enable {
+      background-color: DarkRed;
+    }
 
     #ctrl-bar {
       display: flex;
@@ -147,11 +150,12 @@
 </head>
 <body>
   <div id="app">
-    <div id="status-bar" class="horizontal main-content">Length: , Speed: </div>
+    <div id="status-bar" class="horizontal main-content"></div>
     <canvas id="main-canvas" class="main-content"></canvas>
     <div id="tool-bar" class="horizontal main-content">
+      <button id="btn-restart" class="btn-ctrl">Restart</button>
       <button id="btn-pause" class="btn-ctrl">Pause</button>
-      <button id="btn-restart" class="btn-ctrl hidden">Restart</button>
+      <button id="btn-ai" class="btn-ctrl">AI</button>
     </div>
     <div id="tips-bar" class="main-content hidden">Move: wasd or ↑→↓←, Dash: space</div>
     <div id="ctrl-bar" class="horizontal main-content hidden">

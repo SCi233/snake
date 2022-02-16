@@ -3,11 +3,12 @@ import { Renderer } from './renderer.js';
 import { Keyboard } from './keyboard.js';
 
 import { GameMap } from './gameMap.js';
-import { Snake } from './snake/snake.js';
+import { Snake, DIRECTION } from './snake/index.js';
 import { Food } from './food.js';
+import { ResultText } from './resultText.js';
 
 import { getRandomInt, isTouchable } from './utils.js';
-import { DIRECTION } from './snake/constants.js';
+import { getNextDirection } from './ai.js';
 
 const ROW_NUM = 10;
 const COL_NUM = 10;
@@ -22,6 +23,7 @@ const ctrlBar = document.querySelector('#ctrl-bar');
 const tipsBar = document.querySelector('#tips-bar');
 const btnPause = document.querySelector('#btn-pause');
 const btnRestart = document.querySelector('#btn-restart');
+const btnAI = document.querySelector('#btn-ai');
 const btnJoystickUp = document.querySelector('#btn-joystick-up');
 const btnJoystickLeft = document.querySelector('#btn-joystick-left');
 const btnJoystickRight = document.querySelector('#btn-joystick-right');
@@ -43,10 +45,17 @@ if (isTouchable()) {
 }
 
 const setStatusText = (snakeLength, snakeSpeed) => {
-  statusBar.innerHTML = `Length: ${snakeLength}, Speed: ${snakeSpeed}`;
+  statusBar.innerHTML = `Length: ${snakeLength}`;
 };
 
 const renderer = new Renderer(canvas);
+
+const resultText = new ResultText(0, (ROW_NUM + 2) * PIXEL_SIZE * 8 / 4, {
+  width: (COL_NUM + 2) * PIXEL_SIZE * 8,
+  height : (ROW_NUM + 2) * PIXEL_SIZE * 8 / 2,
+  text: '',
+});
+resultText.visible = false;
 
 const gameMap = new GameMap({
   x: 0,
@@ -77,28 +86,44 @@ const generateFoodXY = () => {
 
 let food = new Food(...generateFoodXY(), PIXEL_SIZE, Food.TYPES.CHERRY);
 
+const AI = (options) => {
+  const { isTailAccessible } = options;
+  return getNextDirection(gameMap, snake, food, isTailAccessible);
+};
+
 const update = (elapsed) => {
   gameMap.update();
   food.update();
-  if (!snake.isDead()) {
+  if (snake.length === COL_NUM * ROW_NUM) {
+    resultText.text = 'You Win!';
+    resultText.textColor = 'Green';
+    resultText.visible = true;
+  } else if (!snake.isDead()) {
     snake.update(elapsed);
     if (snake.isEat(food)) {
       snake.grow();
       snake.speedUp();
-      [food.x, food.y] = generateFoodXY();
-      food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
+      if (snake.length < COL_NUM * ROW_NUM) {
+        [food.x, food.y] = generateFoodXY();
+        food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
+      } else {
+        food.visible = false;
+      }
     }
   } else {
-    btnRestart.classList.remove('hidden');
     btnPause.setAttribute('disabled', 'disabled');
+    resultText.text = 'YOU DIED'
+    resultText.textColor = 'Red';
+    resultText.visible = true;
   }
 }
 
 const draw = () => {
   renderer.clear();
-  gameMap.draw(renderer);
-  food.draw(renderer);
-  snake.draw(renderer);
+  gameMap.visible && gameMap.draw(renderer);
+  food.visible && food.draw(renderer);
+  snake.visible && snake.draw(renderer);
+  resultText.visible && resultText.draw(renderer);
 }
 
 const keyW = new Keyboard('KeyW');
@@ -136,6 +161,9 @@ btnJoystickLeft.addEventListener('touchstart', () => { snake.changeDirection(DIR
 btnDash.addEventListener('mousedown', () => { snake.dash(); });
 btnDash.addEventListener('touchstart', () => { snake.dash(); });
 
+let isPaused = false;
+let isEnableAI = false;
+
 const restart = () => {
   snake = new Snake({
     length: 3,
@@ -147,26 +175,53 @@ const restart = () => {
   setStatusText(snake.length, snake.speed);
   [food.x, food.y] = generateFoodXY();
   food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
+  food.visible = true;
+
+  if (isEnableAI) {
+    snake.beforeMove = AI;
+  }
+
+  resultText.text = '';
+  resultText.visible = false;
 }
 
 btnRestart.addEventListener('click', () => {
   restart();
-  btnRestart.classList.add('hidden');
   btnPause.removeAttribute('disabled');
 });
 
-let isPaused = false;
-
 btnPause.addEventListener('click', () => {
   isPaused = !isPaused;
-  btnPause.innerHTML = isPaused ? 'Resume' : 'Pause';
+  if (isPaused) {
+    btnRestart.setAttribute('disabled', 'disabled');
+    btnPause.innerHTML = 'Resume';
+    resultText.text = 'Paused';
+    resultText.textColor = 'White';
+    resultText.visible = true;
+  } else {
+    btnRestart.removeAttribute('disabled');
+    btnPause.innerHTML = 'Pause';
+    resultText.text = '';
+    resultText.visible = false;
+  }
+});
+
+btnAI.addEventListener('click', () => {
+  isEnableAI = !isEnableAI;
+  if (isEnableAI) {
+    snake.beforeMove = AI;
+    btnAI.classList.add('btn-ctrl-enable');
+  } else {
+    snake.beforeMove = null;
+    btnAI.classList.remove('btn-ctrl-enable');
+  }
 });
 
 const main = () => {
   mainLoop.setOpLoop((elapsed) => {
     if (!isPaused) {
       checkInput();
-      update (elapsed);
+      update(elapsed);
     }
     draw();
   });
