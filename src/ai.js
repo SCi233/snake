@@ -3,7 +3,7 @@ import { Snake, DIRECTION, INVALID_DIRECTION } from "./snake/index.js";
 import { Food } from "./food.js";
 
 import { search } from "./aStar.js";
-import { getRandomInt } from "./utils.js";
+import { getRandomInt, shuffle } from "./utils.js";
 
 /** 0: accessible, 1: not accessible */
 const ENTITY_TYPES = {
@@ -42,7 +42,7 @@ const serializeEntities = (gameMap, snake, food, isTailAccessible) => {
   return arr;
 };
 
-/** direction, [y, x, dir][], up, right, down, left */
+/** direction, [y, x, dir][] */
 const _dir = [
   [-1, 0, DIRECTION.UP],
   [0, 1, DIRECTION.RIGHT],
@@ -88,9 +88,15 @@ const _getHeadNeighborInfos = (grid, head, tail, food, isTailAccessible) => {
   // return result;
 };
 
+let callCnt = 0;
+
 export const getNextDirection = (gameMap, snake, food, isTailAccessible) => {
+  if (callCnt++ > 16) {
+    shuffle(_dir);
+    callCnt = 0;
+  }
   const grid = serializeEntities(gameMap, snake, food);
-  console.log(grid);
+  // console.log(grid);
   const neighborInfos = _getHeadNeighborInfos(grid, snake.getHead(), snake.getTail(), food, isTailAccessible).filter(el => el.tailPathLen !== -1);
   if (snake.length === (gameMap.colNums * gameMap.rowNums - 1)) {
     const target = neighborInfos.find(el => el.x === food.x && el.y === food.y);
@@ -100,7 +106,7 @@ export const getNextDirection = (gameMap, snake, food, isTailAccessible) => {
   } else if (neighborInfos.length === 0) {
     const randomDir = [DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.DOWN, DIRECTION.LEFT]
       .filter(el => el !== INVALID_DIRECTION[snake.direction])[getRandomInt(0, 3)];
-    console.log('random', randomDir, snake.direction);
+    // console.log('random', randomDir, snake.direction);
     return randomDir;
   } else {
     let sameDirectionItem;
@@ -138,7 +144,7 @@ export const getNextDirection = (gameMap, snake, food, isTailAccessible) => {
         result = canGotoTailPositions[getRandomInt(0, canGotoTailPositions.length - 1)].dir;
       }
     }
-    console.log(result, snake.direction);
+    // console.log(result, snake.direction);
     return result;
   }
 };

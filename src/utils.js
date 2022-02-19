@@ -15,3 +15,10 @@ export const LP2RP = (x, y, pixelSize) => {
     y: y * pixelSize * 8,
   }
 };
+
+export const shuffle = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    const j = getRandomInt(0, arr.length);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+};
