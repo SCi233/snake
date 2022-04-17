@@ -1,6 +1,6 @@
-import { GameObject } from "../gameObject.js";
-import { DIRECTION } from "./constants.js";
-import { LP2RP } from '../utils.js';
+import { GameObject } from '../gameObject.js'
+import { DIRECTION } from './constants.js'
+import { LP2RP } from '../utils.js'
 
 const HORIZONTAL_PIXEL_DATAS = [
   [0, 0, 0, 0, 0, 0, 0, 0],
@@ -10,8 +10,8 @@ const HORIZONTAL_PIXEL_DATAS = [
   [1, 1, 1, 3, 1, 1, 1, 3],
   [3, 3, 3, 3, 3, 3, 3, 3],
   [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-];
+  [0, 0, 0, 0, 0, 0, 0, 0]
+]
 
 const VERTICAL_PIXEL_DATAS = [
   [0, 0, 3, 3, 1, 3, 0, 0],
@@ -21,8 +21,8 @@ const VERTICAL_PIXEL_DATAS = [
   [0, 0, 3, 3, 1, 3, 0, 0],
   [0, 0, 3, 1, 1, 3, 0, 0],
   [0, 0, 3, 1, 1, 3, 0, 0],
-  [0, 0, 3, 1, 3, 3, 0, 0],
-];
+  [0, 0, 3, 1, 3, 3, 0, 0]
+]
 
 export class SnakeBody extends GameObject {
   static TYPES = {
@@ -35,21 +35,21 @@ export class SnakeBody extends GameObject {
     UP: 6,
     RIGHT: 7,
     DOWN: 8,
-    LEFT: 9,
+    LEFT: 9
   }
 
   static ENDPOINT_TYPES = [
     SnakeBody.TYPES.UP,
     SnakeBody.TYPES.RIGHT,
     SnakeBody.TYPES.DOWN,
-    SnakeBody.TYPES.LEFT,
+    SnakeBody.TYPES.LEFT
   ]
 
   static ENDPOINT_TYPES_TO_TYPES = {
     [SnakeBody.TYPES.UP]: SnakeBody.TYPES.VERTICAL,
     [SnakeBody.TYPES.RIGHT]: SnakeBody.TYPES.HORIZONTAL,
     [SnakeBody.TYPES.DOWN]: SnakeBody.TYPES.VERTICAL,
-    [SnakeBody.TYPES.LEFT]: SnakeBody.TYPES.HORIZONTAL,
+    [SnakeBody.TYPES.LEFT]: SnakeBody.TYPES.HORIZONTAL
   }
 
   static DIRECTION_TO_TYPE = {
@@ -60,7 +60,7 @@ export class SnakeBody extends GameObject {
     ['' + DIRECTION.DOWN + DIRECTION.LEFT]: SnakeBody.TYPES.RIGHTBOTTOM,
     ['' + DIRECTION.DOWN + DIRECTION.RIGHT]: SnakeBody.TYPES.LEFTBOTTOM,
     ['' + DIRECTION.LEFT + DIRECTION.UP]: SnakeBody.TYPES.LEFTBOTTOM,
-    ['' + DIRECTION.LEFT + DIRECTION.DOWN]: SnakeBody.TYPES.LEFTTOP,
+    ['' + DIRECTION.LEFT + DIRECTION.DOWN]: SnakeBody.TYPES.LEFTTOP
   }
 
   static COLORS = [
@@ -83,7 +83,7 @@ export class SnakeBody extends GameObject {
       [0, 0, 3, 3, 1, 1, 1, 3],
       [0, 0, 3, 1, 1, 1, 3, 3],
       [0, 0, 3, 1, 1, 3, 0, 0],
-      [0, 0, 3, 1, 3, 3, 0, 0],
+      [0, 0, 3, 1, 3, 3, 0, 0]
     ],
     [SnakeBody.TYPES.RIGHTTOP]: [
       [0, 0, 0, 0, 0, 0, 0, 0],
@@ -93,7 +93,7 @@ export class SnakeBody extends GameObject {
       [1, 1, 1, 3, 1, 3, 0, 0],
       [3, 3, 1, 1, 1, 3, 0, 0],
       [0, 0, 3, 1, 1, 3, 0, 0],
-      [0, 0, 3, 1, 3, 3, 0, 0],
+      [0, 0, 3, 1, 3, 3, 0, 0]
     ],
     [SnakeBody.TYPES.LEFTBOTTOM]: [
       [0, 0, 3, 3, 1, 3, 0, 0],
@@ -103,7 +103,7 @@ export class SnakeBody extends GameObject {
       [0, 0, 0, 3, 1, 1, 1, 3],
       [0, 0, 0, 0, 3, 3, 3, 3],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
     ],
     [SnakeBody.TYPES.RIGHTBOTTOM]: [
       [0, 0, 3, 3, 1, 3, 0, 0],
@@ -113,36 +113,36 @@ export class SnakeBody extends GameObject {
       [1, 1, 1, 3, 3, 0, 0, 0],
       [3, 3, 3, 3, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0],
-    ],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ]
   }
 
   constructor (x, y, pixelSize, type) {
-    super(x, y);
-    this.pixelSize = pixelSize;
-    this.type = type || SnakeBody.TYPES.HORIZONTAL;
+    super(x, y)
+    this.pixelSize = pixelSize
+    this.type = type || SnakeBody.TYPES.HORIZONTAL
   }
 
   update () {}
 
   draw (renderer) {
-    const {pixelSize, type} = this;
-    const {x, y} = LP2RP(this.x, this.y, pixelSize);
-    const pixelData = this._getPixelData(type);
+    const { pixelSize, type } = this
+    const { x, y } = LP2RP(this.x, this.y, pixelSize)
+    const pixelData = this._getPixelData(type)
     for (let r = 0; r < pixelData.length; r++) {
       for (let c = 0; c < pixelData[r].length; c++) {
         if (pixelData[r][c] !== 0) {
-          renderer.drawRect(x + c * pixelSize, y + r * pixelSize, pixelSize, pixelSize, this._getColor(pixelData[r][c]));
+          renderer.drawRect(x + c * pixelSize, y + r * pixelSize, pixelSize, pixelSize, this._getColor(pixelData[r][c]))
         }
       }
     }
   }
 
   _getPixelData (type) {
-    return SnakeBody.PIXEL_DATAS[type];
+    return SnakeBody.PIXEL_DATAS[type]
   }
 
   _getColor (colorType) {
-    return SnakeBody.COLORS[colorType];
+    return SnakeBody.COLORS[colorType]
   }
 }

@@ -3,9 +3,25 @@
   "version": "0.0.1",
   "description": "a snake game",
   "scripts": {
-    "start": "npx http-server ./ -a 127.0.0.1 -p 9876 -o /public/index.html"
+    "build": "npx webpack --config ./webpack.config.js",
+    "serve": "npx webpack serve --config ./webpack.config.dev.js --open",
+    "lint": "npx eslint ./src/** --fix"
   },
-  "keywords": ["snake", "game"],
+  "keywords": [
+    "snake",
+    "game"
+  ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.17.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "eslint": "^7.32.0",
+    "html-webpack-plugin": "^5.3.2",
+    "source-map-loader": "^3.0.0",
+    "webpack": "^5.43.0",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^3.11.2"
+  }
 }
