@@ -2,7 +2,7 @@ import { GameObject } from "./gameObject.js";
 import { getRandomInt, LP2RP } from './utils.js';
 
 const COLORS = [
-  'DarkSeaGreen',
+  '',
   '#23d57d', '#11804b', '#084b2a', '#8f4613',
   '#cb651b', '#522a07', '#6e7679',
 ];
@@ -73,7 +73,15 @@ export class GameMap extends GameObject {
     const {x: rx, y: ry} = LP2RP(x, y, pixelSize);
     for (let r = 0; r < pixelData.length; r++) {
       for (let c = 0; c < pixelData[r].length; c++) {
-        renderer.drawRect(rx + c * pixelSize, ry + r * pixelSize, pixelSize, pixelSize, COLORS[pixelData[r][c]]);
+        if (pixelData[r][c] !== 0) {
+          renderer.drawRect(
+            rx + c * pixelSize,
+            ry + r * pixelSize,
+            pixelSize,
+            pixelSize,
+            COLORS[pixelData[r][c]]
+          );
+        }
       }
     }
   }

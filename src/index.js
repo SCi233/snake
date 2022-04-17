@@ -4,7 +4,7 @@ import { Keyboard } from './keyboard.js';
 
 import { GameMap } from './gameMap.js';
 import { Snake, DIRECTION } from './snake/index.js';
-import { Food } from './food.js';
+import { Food, TYPE as FOODTYPE } from './food.js';
 import { ResultText } from './resultText.js';
 
 import { getRandomInt, isTouchable } from './utils.js';
@@ -84,7 +84,7 @@ const generateFoodXY = () => {
   return [x, y];
 }
 
-let food = new Food(...generateFoodXY(), PIXEL_SIZE, Food.TYPES.CHERRY);
+let food = new Food(...generateFoodXY(), PIXEL_SIZE, FOODTYPE.CHERRY);
 
 const AI = (options) => {
   const { isTailAccessible } = options;
@@ -105,7 +105,7 @@ const update = (elapsed) => {
       snake.speedUp();
       if (snake.length < COL_NUM * ROW_NUM) {
         [food.x, food.y] = generateFoodXY();
-        food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
+        food.type = [FOODTYPE.APPLE, FOODTYPE.CHERRY, FOODTYPE.BANANA, FOODTYPE.WATERMELON][getRandomInt(0, 4)];
       } else {
         food.visible = false;
       }
@@ -119,7 +119,7 @@ const update = (elapsed) => {
 }
 
 const draw = () => {
-  renderer.clear();
+  renderer.clear('DarkSeaGreen');
   gameMap.visible && gameMap.draw(renderer);
   food.visible && food.draw(renderer);
   snake.visible && snake.draw(renderer);
@@ -174,7 +174,7 @@ const restart = () => {
   snake.onStatusChanged(setStatusText);
   setStatusText(snake.length, snake.speed);
   [food.x, food.y] = generateFoodXY();
-  food.type = [Food.TYPES.APPLE, Food.TYPES.CHERRY, Food.TYPES.BANANA, Food.TYPES.WATERMELON][getRandomInt(0, 4)];
+  food.type = [FOODTYPE.APPLE, FOODTYPE.CHERRY, FOODTYPE.BANANA, FOODTYPE.WATERMELON][getRandomInt(0, 4)];
   food.visible = true;
 
   if (isEnableAI) {

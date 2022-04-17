@@ -63,7 +63,10 @@ export class SnakeBody extends GameObject {
     ['' + DIRECTION.LEFT + DIRECTION.DOWN]: SnakeBody.TYPES.LEFTTOP,
   }
 
-  static COLORS = ['#ffffff00', 'Green', 'Black', 'DarkGreen', 'Pink'];
+  static COLORS = [
+    '',
+    'Green', 'Black', 'DarkGreen', 'Pink'
+  ];
 
   static PIXEL_DATAS = {
     [SnakeBody.TYPES.HORIZONTAL]: HORIZONTAL_PIXEL_DATAS,
@@ -128,7 +131,9 @@ export class SnakeBody extends GameObject {
     const pixelData = this._getPixelData(type);
     for (let r = 0; r < pixelData.length; r++) {
       for (let c = 0; c < pixelData[r].length; c++) {
-        renderer.drawRect(x + c * pixelSize, y + r * pixelSize, pixelSize, pixelSize, this._getColor(pixelData[r][c]));
+        if (pixelData[r][c] !== 0) {
+          renderer.drawRect(x + c * pixelSize, y + r * pixelSize, pixelSize, pixelSize, this._getColor(pixelData[r][c]));
+        }
       }
     }
   }
