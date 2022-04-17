@@ -7,7 +7,9 @@
     "serve": "npx webpack serve --config ./webpack.config.dev.js --open",
     "lint": "npx eslint ./src/** --fix",
     "predeploy": "npm run build",
-    "deploy": "npx gh-pages -o github -d dist"
+    "deploy2github": "npx gh-pages -o github -d dist",
+    "deploy2gitee": "npx gh-pages -o gitee -d dist",
+    "deploy": "npm run deploy2gitee & npm run deploy2github"
   },
   "keywords": [
     "snake",
