@@ -1,7 +1,7 @@
 # snake
 a snake game write with vanilla javascript
 
-online demo: [github pages](https://sci233.github.io/snake/public/index.html) , [gitee pages](https://sci233.gitee.io/snake/public/index.html)
+online demo: [github pages](https://sci233.github.io/snake/) , [gitee pages](https://sci233.gitee.io/snake/)
 
 preview:
 
