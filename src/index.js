@@ -95,9 +95,11 @@ const update = (elapsed) => {
   gameMap.update()
   food.update()
   if (snake.length === COL_NUM * ROW_NUM) {
-    resultText.text = 'You Win!'
-    resultText.textColor = 'Green'
-    resultText.visible = true
+    if (!resultText.visible) {
+      resultText.text = 'You Win!'
+      resultText.textColor = 'Green'
+      resultText.visible = true
+    }
   } else if (!snake.isDead()) {
     snake.update(elapsed)
     if (snake.isEat(food)) {
@@ -150,7 +152,7 @@ const checkInput = () => {
   }
 }
 
-btnJoystickUp.addEventListener('mousedown', () => { snake.changeDirection(DIRECTION.UP) })
+btnJoystickUp.addEventListener('mousedown', () => {snake.changeDirection(DIRECTION.UP) })
 btnJoystickUp.addEventListener('touchstart', () => { snake.changeDirection(DIRECTION.UP) })
 btnJoystickRight.addEventListener('mousedown', () => { snake.changeDirection(DIRECTION.RIGHT) })
 btnJoystickRight.addEventListener('touchstart', () => { snake.changeDirection(DIRECTION.RIGHT) })
@@ -188,6 +190,7 @@ const restart = () => {
 btnRestart.addEventListener('click', () => {
   restart()
   btnPause.removeAttribute('disabled')
+  btnRestart.blur()
 })
 
 btnPause.addEventListener('click', () => {
@@ -204,6 +207,7 @@ btnPause.addEventListener('click', () => {
     resultText.text = ''
     resultText.visible = false
   }
+  btnPause.blur()
 })
 
 btnAI.addEventListener('click', () => {
@@ -215,10 +219,11 @@ btnAI.addEventListener('click', () => {
     snake.beforeMove = null
     btnAI.classList.remove('btn-ctrl-enable')
   }
+  btnAI.blur()
 })
 
 const main = () => {
-  mainLoop.setOpLoop((elapsed) => {
+  mainLoop.setOnLoop((elapsed) => {
     if (!isPaused) {
       checkInput()
       update(elapsed)

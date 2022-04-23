@@ -10,7 +10,7 @@ import {
   directionValues
 } from './constants.js'
 
-const MAX_SPEED = isTouchable() ? 3 : 4
+const MAX_SPEED = isTouchable() ? 3 : 5
 const INIT_SPEED = 1
 const AI_SPEED = 16
 

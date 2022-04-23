@@ -75,7 +75,8 @@ export class Food extends GameObject {
         if (pixelData[r][c] !== 0) {
           renderer.drawRect(
             x + c * pixelSize,
-            y + r * pixelSize, pixelSize,
+            y + r * pixelSize,
+            pixelSize,
             pixelSize,
             COLORS[pixelData[r][c]]
           )

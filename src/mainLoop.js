@@ -11,7 +11,7 @@ export class MainLoop {
 
   lastTimeStamp;
 
-  setOpLoop (onLoop) {
+  setOnLoop (onLoop) {
     this.onLoop = onLoop
   }
 
