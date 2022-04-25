@@ -27,16 +27,6 @@ const PIXEL_DATAS = {
     [0, 0, 6, 7, 7, 6, 0, 0],
     [0, 0, 0, 7, 7, 0, 0, 0],
     [0, 0, 0, 7, 7, 0, 0, 0]
-  ],
-  CELL: [
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0]
   ]
 }
 
@@ -64,7 +54,6 @@ export class GameMap extends GameObject {
 
   draw (renderer) {
     this._drawTrees(renderer)
-    this._drawCells(renderer)
   }
 
   _drawCell (renderer, x, y, type) {
@@ -95,14 +84,6 @@ export class GameMap extends GameObject {
     for (let c = 1; c <= this.colNums; ++c) {
       this._drawCell(renderer, c, 0, this._treeTypeArr[typeIndex++])
       this._drawCell(renderer, c, this.colNums + 1, this._treeTypeArr[typeIndex++])
-    }
-  }
-
-  _drawCells (renderer) {
-    for (let r = 0; r < this.rowNums; ++r) {
-      for (let c = 0; c < this.colNums; ++c) {
-        this._drawCell(renderer, c + 1, r + 1, 'CELL')
-      }
     }
   }
 }

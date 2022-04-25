@@ -197,6 +197,7 @@ export class Snake extends GameObject {
         return true
       }
     }
+    return false
   }
 
   forEach (cb) {

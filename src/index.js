@@ -95,7 +95,7 @@ const update = (elapsed) => {
   gameMap.update()
   food.update()
   if (snake.length === COL_NUM * ROW_NUM) {
-    if (!resultText.visible) {
+    if (resultText.text !== 'You Win!') {
       resultText.text = 'You Win!'
       resultText.textColor = 'Green'
       resultText.visible = true
@@ -114,9 +114,11 @@ const update = (elapsed) => {
     }
   } else {
     btnPause.setAttribute('disabled', 'disabled')
-    resultText.text = 'YOU DIED'
-    resultText.textColor = 'Red'
-    resultText.visible = true
+    if (resultText.text !== 'YOU DIED') {
+      resultText.text = 'YOU DIED'
+      resultText.textColor = 'Red'
+      resultText.visible = true
+    }
   }
 }
 
