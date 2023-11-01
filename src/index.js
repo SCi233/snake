@@ -176,8 +176,8 @@ const restart = () => {
     pixelSize: PIXEL_SIZE
   })
   snake.onStatusChanged(setStatusText)
-  setStatusText(snake.length, snake.speed);
-  [food.x, food.y] = generateFoodXY()
+  setStatusText(snake.length, snake.speed)
+  ;[food.x, food.y] = generateFoodXY()
   food.type = [FOODTYPE.APPLE, FOODTYPE.CHERRY, FOODTYPE.BANANA, FOODTYPE.WATERMELON][getRandomInt(0, 4)]
   food.visible = true
 

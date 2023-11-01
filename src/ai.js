@@ -62,7 +62,7 @@ const _getHeadNeighborInfos = (grid, head, tail, food, isTailAccessible) => {
     foodPathLen: -1
   }))
   neighbors.forEach(el => {
-    if (el.x < 0 || el.y < 0 || el.x >= grid.length || el.y >= grid[0].length ||
+    if (el.x < 0 || el.y < 0 || el.x >= grid[0].length || el.y >= grid.length ||
       grid[el.y][el.x] === 1) {
       return
     }
@@ -94,7 +94,7 @@ export const getNextDirection = (gameMap, snake, food, isTailAccessible) => {
     callCnt = 0
   }
   const grid = serializeEntities(gameMap, snake, food)
-  // console.log(grid);
+  console.log(grid);
   const neighborInfos = _getHeadNeighborInfos(grid, snake.getHead(), snake.getTail(), food, isTailAccessible).filter(el => el.tailPathLen !== -1)
   if (snake.length === (gameMap.colNums * gameMap.rowNums - 1)) {
     const target = neighborInfos.find(el => el.x === food.x && el.y === food.y)
@@ -107,13 +107,15 @@ export const getNextDirection = (gameMap, snake, food, isTailAccessible) => {
     // console.log('random', randomDir, snake.direction);
     return randomDir
   } else {
-    let sameDirectionItem
+    let sameDirectionItems = []
+    // let sameDirectionItem
     let minFoodPathLenItem
     let maxTailPathLenItem
     const canGotoTailPositions = neighborInfos.filter(el => el.tailPathLen !== -1)
     for (const info of canGotoTailPositions) {
       if (info.dir === snake.direction) {
-        sameDirectionItem = info
+        // sameDirectionItem = info
+        sameDirectionItems.push(info)
       }
       if (info.foodPathLen !== -1 && (!minFoodPathLenItem || info.foodPathLen < minFoodPathLenItem.foodPathLen)) {
         minFoodPathLenItem = info
@@ -123,15 +125,18 @@ export const getNextDirection = (gameMap, snake, food, isTailAccessible) => {
       }
     }
     let result
-    if (sameDirectionItem) {
-      if (sameDirectionItem === minFoodPathLenItem) {
-        result = sameDirectionItem.dir
+    if (sameDirectionItems.length) {
+      if (minFoodPathLenItem && sameDirectionItems.includes(minFoodPathLenItem)) {
+        result = minFoodPathLenItem.dir
+      // if (sameDirectionItem === minFoodPathLenItem) {
+      //   result = sameDirectionItem.dir
       } else if (maxTailPathLenItem && snake.length > (gameMap.colNums * gameMap.rowNums / 2)) {
         result = maxTailPathLenItem.dir
-      } else if (minFoodPathLenItem && minFoodPathLenItem.foodPathLen <= grid.length / 2) {
+      // } else if (minFoodPathLenItem && minFoodPathLenItem.foodPathLen <= grid.length / 2) {
+      } else if (minFoodPathLenItem) {
         result = minFoodPathLenItem.dir
       } else {
-        result = sameDirectionItem.dir
+        result = sameDirectionItems[0].dir
       }
     } else {
       if (maxTailPathLenItem) {

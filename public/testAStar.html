@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link id="favicon" rel="shortcut icon" href="./favicon.ico" type="image/ico">
+  <title>Test AStar</title>
+  <style>
+    body, div, canvas {
+      margin: 0;
+      border: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: DarkSeaGreen;
+    }
+
+    .main-content {
+      display: block;
+      margin: 2vh auto 0;
+      color: DarkRed;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .horizontal {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .btn-ctrl {
+      margin-right: 2vw;
+      border: 2px solid DarkRed;
+      border-radius: 3px;
+      background-color: DarkGoldenRod;
+      color: white;
+      font-weight: bold;
+    }
+    @media (hover) {
+      .btn-ctrl:hover {
+        background-color: DarkRed;
+      }
+    }
+    .btn-ctrl:active {
+      background-color: DarkGoldenRod;
+    }
+    .btn-ctrl:disabled {
+      background-color: darkgray;
+      border-color: gray;
+    }
+    .btn-ctrl-enable {
+      background-color: DarkRed;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <canvas id="main-canvas" class="main-content"></canvas>
+    <div id="tool-bar" class="horizontal main-content">
+      <button id="btn-restart" class="btn-ctrl">Restart</button>
+      <button id="btn-astar" class="btn-ctrl">AStar</button>
+    </div>
+  </div>
+</body>
+</html>

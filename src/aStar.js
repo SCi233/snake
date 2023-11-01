@@ -16,7 +16,7 @@ const h = (x1, y1, x2, y2) => {
  * @param {number} sx - start x
  * @param {number} sy - start y
  * @param {number} cx - current x
- * @param {number} xy - current y
+ * @param {number} cy - current y
  * @param {number} tx - target x
  * @param {number} ty - target y
  * @returns number
@@ -43,7 +43,7 @@ const _dir = [[-1, 0], [0, 1], [1, 0], [0, -1]]
 const _getNeighbors = (x, y, grid, close) => {
   const neighbors = _dir.map(([yOffset, xOffset]) => ({ x: x + xOffset, y: y + yOffset }))
   return neighbors.filter(({ x, y }) => {
-    return x >= 0 && y >= 0 && x < grid.length && y < grid[0].length && grid[y][x] === 0 && !close.has('' + x + y)
+    return x >= 0 && y >= 0 && x < grid[0].length && y < grid.length && grid[y][x] === 0 && !close.has(`${x},${y}`)
   })
 }
 
@@ -51,7 +51,8 @@ const _getNeighbors = (x, y, grid, close) => {
 const _itemLinkToPath = (item) => {
   const path = []
   for (let p = item; p; p = p.parent) {
-    path.unshift({ x: p.x, y: p.y })
+    console.log('p', p);
+    path.unshift({ x: p.value.x, y: p.value.y })
   }
   return path
 }
@@ -65,7 +66,7 @@ const _itemLinkToPath = (item) => {
  * @param {number[][]} grid - grid, 0: accessible, 1: not accessible
  * @returns {{x: number, y: number}[]} - path, {x, y}[]
  */
-export const search = (x1, y1, x2, y2, grid) => {
+export const search = (x1, y1, x2, y2, grid, debug) => {
   const open = new PriorityQueue()
   const close = new Set()
   const start = _createItem(x1, y1, x1, y1, x2, y2)
@@ -73,12 +74,20 @@ export const search = (x1, y1, x2, y2, grid) => {
   while (!open.isEmpty()) {
     const curItem = open.dequeue()
     const { value: { x: cx, y: cy } } = curItem
-    close.add('' + cx + cy)
+    close.add(`${cx},${cy}`)
     if (cx === x2 && cy === y2) {
+      if (debug) {
+        return [
+          _itemLinkToPath(curItem),
+          open.heap.map(el => ({ x: el.value.x, y: el.value.y })),
+          [...close].map(el => ({ x: el.split(',')[0], y: el.split(',')[1] })),
+        ]
+      }
       return _itemLinkToPath(curItem)
     }
 
-    const neighbors = _getNeighbors(curItem.value.x, curItem.value.y, grid, close)
+    const neighbors = _getNeighbors(cx, cy, grid, close)
+    console.log('neighbors', cx, cy, neighbors);
     for (const { x, y } of neighbors) {
       const exist = open.find((item) => item.value.x === x && item.value.y === y)
       if (exist) {
@@ -96,6 +105,13 @@ export const search = (x1, y1, x2, y2, grid) => {
         open.enqueue(newItem)
       }
     }
+  }
+  if (debug) {
+    return [
+      null,
+      open.heap.map(el => ({ x: el.value.x, y: el.value.y })),
+      [...close].map(el => ({ x: el.split(',')[0], y: el.split(',')[1] })),
+    ]
   }
   return null
 }

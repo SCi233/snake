@@ -83,7 +83,7 @@ export class GameMap extends GameObject {
     }
     for (let c = 1; c <= this.colNums; ++c) {
       this._drawCell(renderer, c, 0, this._treeTypeArr[typeIndex++])
-      this._drawCell(renderer, c, this.colNums + 1, this._treeTypeArr[typeIndex++])
+      this._drawCell(renderer, c, this.rowNums + 1, this._treeTypeArr[typeIndex++])
     }
   }
 }
