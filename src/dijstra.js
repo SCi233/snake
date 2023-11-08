@@ -24,8 +24,8 @@ const h = (x1, y1, x2, y2) => {
  */
 const f = (sx, sy, cx, cy, tx, ty) => {
   const g = h(sx, sy, cx, cy)
-  const hValue = h(cx, cy, tx, ty)
-  // const hValue = 0
+  // const hValue = h(cx, cy, tx, ty)
+  const hValue = 0
   const fValue = g + hValue
   return {
     g,
